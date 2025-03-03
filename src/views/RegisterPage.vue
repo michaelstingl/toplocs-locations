@@ -14,7 +14,7 @@
       <ion-list class="ion-margin-top">
         <ion-list-header class="ion-margin-top">
           <ion-title>
-            Login or <a href="/register" target="_self">SignUp</a>
+            Create an account or <a href="/login" target="_self">Login</a>
           </ion-title>
         </ion-list-header>
 
@@ -26,6 +26,16 @@
           <ion-input
             name="username"
             type="text"
+            label="Username"
+            labelPlacement="fixed"
+            fill="outline"
+          ></ion-input>
+        </ion-item>
+
+        <ion-item class="ion-margin-bottom" lines="none">
+          <ion-input
+            name="email"
+            type="email"
             label="Email"
             labelPlacement="fixed"
             fill="outline"
@@ -36,7 +46,17 @@
           <ion-input
             name="password"
             type="password"
-            label="Passwort"
+            label="Password"
+            labelPlacement="fixed"
+            fill="outline"
+          ></ion-input>
+        </ion-item>
+
+        <ion-item class="ion-margin-bottom" lines="none">
+          <ion-input
+            name="password2"
+            type="password"
+            label="Confirm Password"
             labelPlacement="fixed"
             fill="outline"
           ></ion-input>
@@ -47,7 +67,7 @@
           type="submit"
           shape="round"
           expand="full"
-        > Login
+        > Sign Up
         </ion-button>
       </ion-list>
     </form>
@@ -56,27 +76,22 @@
 </template>
 
 <script setup lang="ts">
-  import axios from 'axios';
-  import { ref, inject, onMounted } from 'vue';
+  import { ref } from 'vue';
   import { useRouter } from 'vue-router';
   import {
     IonList,
     IonItem,
     IonListHeader,
     IonInput,
-    IonLabel,
-    IonIcon,
     IonPage,
     IonButton,
-    IonImage,
     IonTitle,
     IonImg,
   } from '@ionic/vue';
-  import { Session, Profile } from '../types';
-  import { reloadSession} from '@/services/sessionService';
+  import { reloadSession } from '@/services/sessionService';
   import { useUser } from '@/composables/user';
 
-  const { login } = useUser();
+  const { register } = useUser();
   const router = useRouter();
   const errorMessage = ref('');
   const form = ref<HTMLFormElement | null>(null);
@@ -86,10 +101,10 @@
     errorMessage.value = '';
     try {
       const formData = new FormData(form.value ?? undefined);
-      const response = await login(formData);
+      const response = await register(formData);
       await reloadSession();
 
-      if (response) router.push(`/tabs`);
+      if (response) router.push('/tabs');
     } catch (error) {
       errorMessage.value = (error as any).response?.data || 'An error occurred';
       console.error(error);
