@@ -2,7 +2,7 @@
 
 ## Environment Setup
 
-1. Create a `.env` file in the `locations-claude` directory with:
+1. Create a `.env` file in the `locations` directory with:
    ```
    VITE_SERVER_URL=http://localhost:3000
    VITE_MAPS_API_KEY=<google-maps-api-key>
@@ -12,16 +12,16 @@
 
 ## Starting the Application
 
-1. Start the tribelike-claude server first:
+1. Start the tribelike server first:
    ```
-   cd ../tribelike-claude
+   cd ../tribelike
    pnpm install
    pnpm run dev
    ```
 
-2. Start the locations-claude frontend:
+2. Start the locations frontend:
    ```
-   cd ../locations-claude
+   cd ../locations
    pnpm install
    pnpm run dev
    ```
