@@ -18,10 +18,20 @@ export function userProvider() {
     }
   }
 
-  const login = async (formData: {
-    email: string, password: string
-  }) => {
+  const login = async (formData: FormData) => {
     const { data } = await axios.post(`/api/auth/login`, formData);
+    if (data) {
+      await Preferences.set({ key: 'token', value: data.token });
+      axios.defaults.headers.common['Authorization'] = JSON.stringify({
+        token: data.token
+      });
+    }
+    
+    return data;
+  }
+
+  const register = async (formData: FormData) => {
+    const { data } = await axios.post(`/api/user`, formData);
     if (data) {
       await Preferences.set({ key: 'token', value: data.token });
       axios.defaults.headers.common['Authorization'] = JSON.stringify({
@@ -43,6 +53,7 @@ export function userProvider() {
     isAuthenticated,
     getUser,
     login,
+    register,
     logout
   });
 }
